@@ -1192,6 +1192,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: d059205050080af458ddd8b23acb53d0, type: 3}
   pixelWidth: 6
-  pixelHeight: 6
-  pixelPitch: 0
-  softness: 1
+  pixelHeight: 8
+  pixelPitch: 1
+  softness: .25

@@ -55,33 +55,38 @@ public class Transitioner : MonoBehaviour
     // Button event handler method.
     public void LoadPrev()
     {
-        Load(scenes[currentScene].prev);
+        if (!transitioning)
+            Load(scenes[currentScene].prev);
     }
 
     // Button event handler method.
     public void LoadNext()
     {
-        Load(scenes[currentScene].next);
+        if (!transitioning)
+            Load(scenes[currentScene].next);
     }
 
     private void Load(Scene scene)
     {
-        if(!transitioning)
-        {
-            if(transitionCamera != null)
-                Transition(scene);
-            else
-                LoadImmediate(scene);
-        }
+        if(transitionCamera != null)
+            StartCoroutine(Transition(scene));
+        else
+            LoadImmediate(scene);
     }
 
-    private void Transition(Scene scene)
+    private IEnumerator Transition(Scene scene)
     {
-        var tCamAnimator = transitionCamera.GetComponent<Animator>();
+        var tCamAnimator = transitionCamera.GetComponent<HorizontalStretchProcess>();
 
-        tCamAnimator.SetBool("Transitioning", true);
+        transitioning = true;
+
+        tCamAnimator.transition = true;
+        yield return new WaitForSeconds(1f);
         LoadImmediate(scene);
-        tCamAnimator.SetBool("Transitioning", false);
+        yield return new WaitForSeconds(0.5f);
+        tCamAnimator.transition = false;
+        yield return new WaitForSeconds(1f);
+        transitioning = false;
     }
 
     private void LoadImmediate(Scene scene)
